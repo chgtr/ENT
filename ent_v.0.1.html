@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyHub - Votre ENT Nouvelle Génération</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151b3d;
+            --bg-tertiary: #1e2749;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff006e;
+            --accent-tertiary: #ffbe0b;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c5db;
+            --text-muted: #6b7a99;
+            --success: #00ff88;
+            --warning: #ffbe0b;
+            --error: #ff006e;
+            --shadow-lg: 0 20px 60px rgba(0, 217, 255, 0.15);
+            --shadow-xl: 0 30px 90px rgba(0, 217, 255, 0.25);
+        }
+
+        .light-mode {
+            --bg-primary: #f8f9fc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e8ecf4;
+            --accent-primary: #0066ff;
+            --accent-secondary: #ff006e;
+            --accent-tertiary: #ff8800;
+            --text-primary: #1a1f36;
+            --text-secondary: #4a5568;
+            --text-muted: #8792a8;
+            --success: #00b359;
+            --shadow-lg: 0 20px 60px rgba(0, 102, 255, 0.1);
+            --shadow-xl: 0 30px 90px rgba(0, 102, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Background effects */
+        .bg-effect {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .bg-gradient-1 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-gradient-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation: float 15s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: -0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: var(--accent-primary);
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 217, 255, 0.5);
+        }
+
+        /* Main Layout */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 100px auto 2rem;
+            padding: 0 2rem;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-box {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow-xl);
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.1);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            margin-top: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-primary);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .widget {
+            background: var(--bg-secondary);
+            border-radius: 25px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .widget-icon {
+            font-size: 1.5rem;
+        }
+
+        .widget-action {
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .widget-action:hover {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        /* Cards */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--bg-tertiary);
+            padding: 1.2rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            background: var(--bg-primary);
+            transform: translateX(5px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(255, 190, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-error {
+            background: rgba(255, 0, 110, 0.1);
+            color: var(--error);
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 15px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Calendar */
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: var(--accent-primary);
+            transform: scale(1.1);
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        .calendar-day.event {
+            position: relative;
+        }
+
+        .calendar-day.event::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-tertiary);
+            border-radius: 50%;
+        }
+
+        /* Chat */
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-message {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 15px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .chat-message.own {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            margin-left: auto;
+            max-width: 80%;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .message-content {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 15px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .chat-send {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send:hover {
+            transform: scale(1.05);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: var(--bg-primary);
+        }
+
+        /* Files */
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: var(--bg-primary);
+            transform: translateX(5px);
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .file-icon.pdf {
+            background: rgba(255, 0, 110, 0.1);
+        }
+
+        .file-icon.doc {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .file-icon.img {
+            background: rgba(255, 190, 11, 0.1);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                padding: 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+                margin-top: 80px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Progress bars */
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-xl);
+            z-index: 10001;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-content {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effect">
+        <div class="bg-gradient-1"></div>
+        <div class="bg-gradient-2"></div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-title">🎓 StudyHub</div>
+                <div class="login-subtitle">Connectez-vous avec votre compte Pronote</div>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Identifiant Pronote</label>
+                    <input type="text" class="form-input" id="username" placeholder="Votre identifiant" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" class="form-input" id="password" placeholder="Votre mot de passe" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL Pronote</label>
+                    <input type="text" class="form-input" id="pronoteUrl" placeholder="https://demo.index-education.net/pronote" value="https://demo.index-education.net/pronote">
+                </div>
+                <div class="form-checkbox">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Se souvenir de moi</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Se connecter à StudyHub</button>
+                <button type="button" class="btn btn-secondary" onclick="demoLogin()">Mode Démo (sans connexion)</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="hidden" id="mainHeader">
+        <div class="header-content">
+            <div class="logo">📚 StudyHub</div>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Changer de thème">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <div class="user-avatar" id="userAvatar" onclick="logout()">JD</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container hidden" id="mainContent">
+        <!-- Welcome Section -->
+        <div style="margin-bottom: 2rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">
+                Bonjour, <span id="userName">Jean Dupont</span> 👋
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                Bienvenue sur votre espace de travail personnalisé
+            </p>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Pronote Sync Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="widget-icon">🔄</span>
+                        Synchronisation Pronote
+                    </div>
+                    <button class="widget-action" onclick="syncPronote()">Actualiser</button>
+                </div>
+                <div class="card-list">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Dernière synchronisation</span>
+                            <span class="card-badge badge-success">✓ Connecté</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Il y a 5 minutes • Tous les devoirs et notes sont à jour</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Emploi du temps</span>
+                            <span class="card-badge badge-warning">3 cours</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Aujourd'hui: Mathématiques (9h), Français (14h), Anglais (16h)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Devoirs Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="widget-icon">📝</span>
+                        Devoirs à rendre
+                    </div>
+                    <button class="widget-action" onclick="addHomework()">Ajouter</button>
+                </div>
+                <div class="card-list" id="homeworkList">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Mathématiques - Chapitre 5</span>
+                            <span class="card-badge badge-error">Demain</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Exercices 12 à 18 page 87</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Histoire - Exposé</span>
+                            <span class="card-badge badge-warning">Lundi</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Préparer un exposé sur la Révolution française</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Anglais - Vocabulaire</span>
+                            <span class="card-badge badge-success">Terminé</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Apprendre la liste de vocabulaire Unit 3</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="widget-icon">📊</span>
+                        Mes notes récentes
+                    </div>
+                    <button class="widget-action" onclick="viewAllGrades()">Voir tout</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">15.2</div>
+                        <div class="stat-label">Moyenne générale</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+0.8</div>
+                        <div class="stat-label">vs trimestre dernier</div>
+                    </div>
+                </div>
+                <div class="card-list" style="margin-top: 1rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Mathématiques - DS n°4</span>
+                            <span class="card-badge badge-success">17/20</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Moyenne classe: 13.5 • Très bon travail ! 🎉</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Physique - TP Optique</span>
+                            <span class="card-badge badge-warning">12/20</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Moyenne classe: 14.2 • Peut mieux faire</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendrier Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="widget-icon">📅</span>
+                        Calendrier - Janvier 2026
+                    </div>
+                    <button class="widget-action" onclick="changeMonth()">Suivant</button>
+                </div>
+                <div class="calendar-days" id="calendar">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Chat Widget -->
+            <div class="widget" style="grid-column: span 1;">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="widget-icon">💬</span>
+                        Chat de classe
+                    </div>
+                    <button class="widget-action" onclick="clearChat()">Effacer</button>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message">
+                        <div class="message-header">
+                            <span class="message-author">Marie L.</span>
+                            <span class="message-time">Il y a 2 min</span>
+                        </div>
+                        <div class="message-content">
+                            Quelqu'un a les réponses de l'exo 15 de maths ?
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="message-header">
+                            <span class="message-author">Thomas B.</span>
+                            <span class="message-time">Il y a 5 min</span>
+                        </div>
+                        <div class="message-content">
+                            N'oubliez pas le contrôle d'histoire lundi !
+                        </div>
+                    </div>
+                    <div class="chat-message own">
+                        <div class="message-header">
+                            <span class="message-author">Vous</span>
+                            <span class="message-time">Il y a 10 min</span>
+                        </div>
+                        <div class="message-content">
+                            Salut tout le monde ! 👋
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Tapez votre message...">
+                    <button class="chat-send" onclick="sendMessage()">Envoyer</button>
+                </div>
+            </div>
+
+            <!-- Fichiers Widget -->
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span class="widget-icon">📁</span>
+                        Mes fichiers
+                    </div>
+                    <button class="widget-action" onclick="uploadFile()">Upload</button>
+                </div>
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('recent')">Récents</button>
+                    <button class="tab" onclick="switchTab('shared')">Partagés</button>
+                </div>
+                <div class="card-list" id="filesList">
+                    <div class="file-item">
+                        <div class="file-icon pdf">📄</div>
+                        <div class="file-info">
+                            <div class="file-name">Cours_Maths_Ch5.pdf</div>
+                            <div class="file-meta">2.4 MB • Modifié aujourd'hui</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon doc">📝</div>
+                        <div class="file-info">
+                            <div class="file-name">Exposé_Histoire.docx</div>
+                            <div class="file-meta">1.8 MB • Modifié hier</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon img">🖼️</div>
+                        <div class="file-info">
+                            <div class="file-name">Schema_Physique.png</div>
+                            <div class="file-meta">856 KB • Il y a 3 jours</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const pronoteUrl = document.getElementById('pronoteUrl').value;
+
+            // Simulate Pronote authentication
+            setTimeout(() => {
+                login(username);
+            }, 1500);
+        });
+
+        function demoLogin() {
+            login('Demo User');
+        }
+
+        function login(username) {
+            currentUser = username;
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainHeader').classList.remove('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            
+            // Update user info
+            const initials = username.split(' ').map(n => n[0]).join('');
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('userName').textContent = username;
+
+            showNotification('Connexion réussie', 'Bienvenue sur StudyHub ! Vos données Pronote ont été synchronisées.');
+            
+            // Initialize calendar
+            generateCalendar();
+        }
+
+        function logout() {
+            if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+                currentUser = null;
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('mainHeader').classList.add('hidden');
+                document.getElementById('mainContent').classList.add('hidden');
+            }
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('themeIcon');
+            icon.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+        }
+
+        // Calendar
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            const today = new Date().getDate();
+            
+            for (let i = 1; i <= 31; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = i;
+                
+                if (i === today) {
+                    day.classList.add('today');
+                }
+                
+                // Add random events
+                if (Math.random() > 0.7) {
+                    day.classList.add('event');
+                }
+                
+                day.onclick = () => showDayDetails(i);
+                calendar.appendChild(day);
+            }
+        }
+
+        function showDayDetails(day) {
+            showNotification(`Événements du ${day} janvier`, 'Mathématiques 9h00-10h00\nFrançais 14h00-15h00\nDS Anglais 16h00-17h00');
+        }
+
+        function changeMonth() {
+            showNotification('Calendrier', 'Fonction de navigation entre les mois à venir !');
+        }
+
+        // Chat
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message own';
+                messageDiv.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-author">Vous</span>
+                        <span class="message-time">À l'instant</span>
+                    </div>
+                    <div class="message-content">${message}</div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                input.value = '';
+            }
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function clearChat() {
+            if (confirm('Voulez-vous vraiment effacer tous les messages ?')) {
+                document.getElementById('chatMessages').innerHTML = '';
+                showNotification('Chat', 'Les messages ont été effacés');
+            }
+        }
+
+        // Pronote Sync
+        function syncPronote() {
+            showNotification('Synchronisation', 'Synchronisation avec Pronote en cours...');
+            setTimeout(() => {
+                showNotification('Synchronisation réussie', 'Toutes vos données sont à jour !');
+            }, 2000);
+        }
+
+        // Files
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const filesList = document.getElementById('filesList');
+            if (tab === 'shared') {
+                filesList.innerHTML = `
+                    <div class="file-item">
+                        <div class="file-icon doc">📝</div>
+                        <div class="file-info">
+                            <div class="file-name">Projet_Groupe_SVT.docx</div>
+                            <div class="file-meta">Partagé par Marie L. • 3.2 MB</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon pdf">📄</div>
+                        <div class="file-info">
+                            <div class="file-name">Correction_DS_Maths.pdf</div>
+                            <div class="file-meta">Partagé par Prof. Martin • 1.5 MB</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                filesList.innerHTML = `
+                    <div class="file-item">
+                        <div class="file-icon pdf">📄</div>
+                        <div class="file-info">
+                            <div class="file-name">Cours_Maths_Ch5.pdf</div>
+                            <div class="file-meta">2.4 MB • Modifié aujourd'hui</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon doc">📝</div>
+                        <div class="file-info">
+                            <div class="file-name">Exposé_Histoire.docx</div>
+                            <div class="file-meta">1.8 MB • Modifié hier</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div class="file-icon img">🖼️</div>
+                        <div class="file-info">
+                            <div class="file-name">Schema_Physique.png</div>
+                            <div class="file-meta">856 KB • Il y a 3 jours</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function uploadFile() {
+            showNotification('Upload', 'Fonction d\'upload de fichiers à venir !');
+        }
+
+        // Homework
+        function addHomework() {
+            showNotification('Ajouter un devoir', 'Formulaire d\'ajout de devoir à venir !');
+        }
+
+        // Grades
+        function viewAllGrades() {
+            showNotification('Notes', 'Vue détaillée de toutes les notes à venir !');
+        }
+
+        // Notifications
+        function showNotification(title, content) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div class="notification-title">${title}</div>
+                <div class="notification-content">${content}</div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Auto-scroll chat to bottom
+        window.addEventListener('load', () => {
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
